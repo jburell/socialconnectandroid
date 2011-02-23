@@ -52,7 +52,6 @@ public class TwitterConnection {
 			InputStream inputStream = assetManager.open("twitter4j.properties");
 			Properties properties = new Properties();
 			properties.load(inputStream);
-			System.out.println("The properties are now loaded");
 			System.out.println("properties: " + properties);
 
 			String key = properties.getProperty("oauth.consumerKey", ERROR_PREF);
@@ -62,13 +61,15 @@ public class TwitterConnection {
 			}
 			
 			m_twitter.setOAuthConsumer(key, secret);
+			System.out.println("The properties are now loaded");
 		} catch (IOException e) {
 			System.err.println("Failed to open 'assets/twitter4j.properties' property file");
 			e.printStackTrace();
-			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
-					"Failed to open 'assets/twitter4j.properties' property file: " + e.getMessage(),
-					Toast.LENGTH_LONG);
-			toast.show();
+			ToastMaster.showToast("Failed to open 'assets/twitter4j.properties' property file: " + e.getMessage());
+//			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
+//					"Failed to open 'assets/twitter4j.properties' property file: " + e.getMessage(),
+//					Toast.LENGTH_LONG);
+//			toast.show();
 		}
 	}
 
@@ -125,10 +126,11 @@ public class TwitterConnection {
 				System.out.println("UNAUTHORIZED: " + te.getMessage());
 			} else {
 				te.printStackTrace();
-				Toast toast = Toast.makeText(SocialConnectApp.getContext(),
-						"Failed to get timeline: " + te.getMessage(),
-						Toast.LENGTH_LONG);
-				toast.show();
+				ToastMaster.showToast("Failed to get timeline: " + te.getMessage());
+//				Toast toast = Toast.makeText(SocialConnectApp.getContext(),
+//						"Failed to get timeline: " + te.getMessage(),
+//						Toast.LENGTH_LONG);
+//				toast.show();
 				System.out.println("Failed to get timeline: " + te.getMessage());
 			}
 		}
@@ -142,11 +144,11 @@ public class TwitterConnection {
 			if (m_twitter == null || m_token == null || m_keyIsLoaded == false) {
 				loadOAuthKey(myContext);
 				if (m_twitter == null || m_token == null || m_keyIsLoaded == false) {
-
-					Toast toast = Toast.makeText(SocialConnectApp.getContext(),
-							"Failed to get timeline: Not logged in",
-							Toast.LENGTH_LONG);
-					toast.show();
+					ToastMaster.showToast("Failed to get timeline: Not logged in");
+//					Toast toast = Toast.makeText(SocialConnectApp.getContext(),
+//							"Failed to get timeline: Not logged in",
+//							Toast.LENGTH_LONG);
+//					toast.show();
 					getPIN(context);
 					return null;
 				}
@@ -171,19 +173,21 @@ public class TwitterConnection {
 			//					}
 		} catch (TwitterException te) {
 			te.printStackTrace();
-			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
-					"Failed to get timeline: " + te.getMessage(),
-					Toast.LENGTH_LONG);
-			toast.show();
+			ToastMaster.showToast("Failed to get timeline: " + te.getMessage());
+//			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
+//					"Failed to get timeline: " + te.getMessage(),
+//					Toast.LENGTH_LONG);
+//			toast.show();
 			System.out.println("Failed to get timeline: " + te.getMessage());
 		} catch (IllegalStateException ise) {
 			System.out.println("IllegalStateException: " + ise.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
-					"Failed to get timeline: " + e.getMessage(),
-					Toast.LENGTH_LONG);
-			toast.show();
+			ToastMaster.showToast("Failed to get timeline: " + e.getMessage());
+//			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
+//					"Failed to get timeline: " + e.getMessage(),
+//					Toast.LENGTH_LONG);
+//			toast.show();
 			System.out.println("Failed to get timeline: " + e.getMessage());
 		}
 		return null;
@@ -208,10 +212,11 @@ public class TwitterConnection {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
-					"Failed to load OAuth key: " + e.getMessage(),
-					Toast.LENGTH_LONG);
-			toast.show();
+			ToastMaster.showToast("Failed to load OAuth key: " + e.getMessage());
+//			Toast toast = Toast.makeText(SocialConnectApp.getContext(),
+//					"Failed to load OAuth key: " + e.getMessage(),
+//					Toast.LENGTH_LONG);
+//			toast.show();
 			System.out.println("Failed to load OAuth key: " + e.getMessage());
 		}
 	}
