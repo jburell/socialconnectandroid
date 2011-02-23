@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:layout_gravity="bottom">
+    <Button android:text="Get PIN" android:layout_width="fill_parent" android:layout_weight="0.3" android:layout_height="wrap_content" android:id="@+id/getPINBtn" android:layout_gravity="bottom"></Button>
+    <EditText android:layout_width="fill_parent" android:layout_weight="0.3" android:text="PIN" android:selectAllOnFocus="true" android:layout_height="wrap_content" android:id="@+id/PINTxt" android:inputType="numberSigned" android:layout_gravity="bottom"></EditText>
+    <Button android:text="Send" android:layout_width="fill_parent" android:layout_weight="0.3" android:layout_height="wrap_content" android:id="@+id/sendPIN" android:layout_gravity="bottom"></Button>
+</LinearLayout>

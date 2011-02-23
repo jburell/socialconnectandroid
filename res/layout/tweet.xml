@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <AbsoluteLayout android:layout_width="wrap_content" android:id="@+id/tweetLayout" android:layout_height="90px" xmlns:android="http://schemas.android.com/apk/res/android" android:background="#4d4d4d">
+        <View android:background="#4d4d4d" android:layout_width="wrap_content" android:id="@+id/tweetPane" android:layout_height="90px"></View>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tweetNameLabel" android:textColor="#ffffff" android:textStyle="bold" android:layout_x="60dip" android:text="TwitterUserName" android:layout_y="4dip"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tweetTxt" android:textSize="10dip" android:layout_y="20dip" android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at ante nec dui tempor lobortis euismod ut orci. Ut egestas sapien eu diam" android:width="250dip" android:layout_x="60dip"></TextView>
+        <ImageView android:src="@drawable/icon" android:id="@+id/tweetIcon" android:layout_x="6dip" android:layout_y="7dip" android:layout_height="48dip" android:layout_width="48dip"></ImageView>
+    </AbsoluteLayout>
