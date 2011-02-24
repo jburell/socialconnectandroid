@@ -6,27 +6,22 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
 import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.widget.Toast;
 
 public class TwitterConnection {
 	private static TwitterConnection m_instance = new TwitterConnection();
 	RequestToken m_requestToken = null;
 	AccessToken m_token = null;
-	Twitter m_twitter = new TwitterFactory().getInstance();
-	User user = null;
+	twitter4j.Twitter m_twitter = new twitter4j.TwitterFactory().getInstance();
+	twitter4j.User user = null;
 	boolean m_keyIsLoaded = false;
 	private final static String OAUTH_KEY = "oauthkey";
 	private final static String OAUTH_SECRET = "oauthsecret";
@@ -70,7 +65,7 @@ public class TwitterConnection {
 	}
 
 	public interface TwitterStatusListener {
-		public void onStatusUpdate(List<Status> statuses);
+		public void onStatusUpdate(List<twitter4j.Status> statuses);
 	}
 
 	public void registerStatusListener(TwitterStatusListener listener) {
@@ -85,13 +80,22 @@ public class TwitterConnection {
 
 	public void getPIN(Context context) {
 		try {
+			// Erase old preferences
+			SharedPreferences settings = context.getSharedPreferences(SocialConnect.APP_PREFERENCES,
+					Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putString(OAUTH_KEY, ERROR_PREF);
+			editor.putString(OAUTH_SECRET, ERROR_PREF);
+			editor.commit();
+			
 			m_requestToken = m_twitter.getOAuthRequestToken();
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse(OAUTH_AUTHORIZE_URL + m_requestToken.getToken()));
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
-		} catch (TwitterException te) {
-			if (te.getStatusCode() == TwitterException.UNAUTHORIZED) {
+		} catch (twitter4j.TwitterException te) {
+			ToastMaster.showToast("Error: " + te.getMessage());
+			if (te.getStatusCode() == twitter4j.TwitterException.UNAUTHORIZED) {
 				System.out.println("UNAUTHORIZED: " + te.getMessage());
 			} else {
 				te.printStackTrace();
@@ -104,9 +108,7 @@ public class TwitterConnection {
 		try {
 			// gets Twitter instance with default credentials
 			if (m_twitter == null || m_token == null || m_keyIsLoaded == false) {
-				m_token = m_twitter.getOAuthAccessToken(m_requestToken.getToken(),
-						m_requestToken.getTokenSecret(),
-						pin);
+				m_token = m_twitter.getOAuthAccessToken(m_requestToken,	pin);
 				user = m_twitter.verifyCredentials();
 
 				if (user != null) {
@@ -117,8 +119,8 @@ public class TwitterConnection {
 			refreshTimeLine(context);
 			
 			return true;
-		} catch (TwitterException te) {
-			if (te.getStatusCode() == TwitterException.UNAUTHORIZED) {
+		} catch (twitter4j.TwitterException te) {
+			if (te.getStatusCode() == twitter4j.TwitterException.UNAUTHORIZED) {
 				System.out.println("UNAUTHORIZED: " + te.getMessage());
 			} else {
 				te.printStackTrace();
@@ -147,10 +149,10 @@ public class TwitterConnection {
 				user = m_twitter.verifyCredentials();
 			}
 			if (user == null || m_token == null || m_keyIsLoaded == false) {
-				throw new TwitterException("User not logged in!");
+				throw new twitter4j.TwitterException("User not logged in!");
 			}
 
-			List<Status> statuses = m_twitter.getHomeTimeline();
+			List<twitter4j.Status> statuses = m_twitter.getHomeTimeline();
 			System.out.println("Recieved @" + user.getScreenName()
 					+ "'s home timeline.");
 
@@ -159,7 +161,7 @@ public class TwitterConnection {
 			//					for(TwitterStatusListener listener: m_statusListeners){
 			//						listener.onStatusUpdate(statuses);
 			//					}
-		} catch (TwitterException te) {
+		} catch (twitter4j.TwitterException te) {
 			te.printStackTrace();
 			ToastMaster.showToast("Failed to get timeline: " + te.getMessage());
 			System.out.println("Failed to get timeline: " + te.getMessage());
