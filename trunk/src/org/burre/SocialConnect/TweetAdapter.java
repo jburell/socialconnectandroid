@@ -81,9 +81,9 @@ public class TweetAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		List<Status> statusList = m_statuses.getData();
+		List<twitter4j.Status> statusList = m_statuses.getData();
 		if (statusList.size() > 0) {
-			Status currStatus = statusList.get(position);
+			twitter4j.Status currStatus = statusList.get(position);
 
 			CharSequence strA = holder.tweetNmae.getText();
 
